@@ -7,6 +7,12 @@ on:
     paths:
       - tools/render_history_video.py
       - .github/workflows/render-history-video.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/render_history_video.py
+      - .github/workflows/render-history-video.yml
   workflow_dispatch:
 
 permissions:
