@@ -5,13 +5,13 @@ on:
     branches:
       - tmp/xiangyu-real-clips-v2
     paths:
-      - tools/render_xiangyu_real_clips.py
+      - tools/render_xiangyu_real_clips_v2.py
       - .github/workflows/render-xiangyu-real-clips.yml
   pull_request:
     branches:
       - main
     paths:
-      - tools/render_xiangyu_real_clips.py
+      - tools/render_xiangyu_real_clips_v2.py
       - .github/workflows/render-xiangyu-real-clips.yml
   workflow_dispatch:
 
@@ -21,7 +21,7 @@ permissions:
 jobs:
   render:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 35
     steps:
       - name: Checkout temporary render branch
         uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
         run: |
           mkdir -p out
           set +e
-          python tools/render_xiangyu_real_clips.py > out/render.log 2>&1
+          python tools/render_xiangyu_real_clips_v2.py > out/render.log 2>&1
           status=$?
           cat out/render.log
           echo "$status" > out/render-exit-code.txt
@@ -59,7 +59,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: xiangyu-real-clips-fast-video
+          name: xiangyu-real-clips-fast-video-v2
           path: out/
           if-no-files-found: error
           compression-level: 0
