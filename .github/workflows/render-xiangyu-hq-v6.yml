@@ -1,4 +1,4 @@
-name: Render Xiang Yu HQ v8
+name: Render Xiang Yu HQ v9
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
     paths:
       - tools/render_xiangyu_hq_v6.py
       - tools/render_xiangyu_hq_v8.py
+      - tools/render_xiangyu_hq_v9.py
       - .github/workflows/render-xiangyu-hq-v6.yml
   pull_request:
     branches:
@@ -14,6 +15,7 @@ on:
     paths:
       - tools/render_xiangyu_hq_v6.py
       - tools/render_xiangyu_hq_v8.py
+      - tools/render_xiangyu_hq_v9.py
       - .github/workflows/render-xiangyu-hq-v6.yml
   workflow_dispatch:
 
@@ -33,16 +35,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg fonts-noto-cjk
 
-      - name: Install downloader and TTS
+      - name: Install TTS and requests
         run: |
           python -m pip install --upgrade pip
           python -m pip install edge-tts requests
 
-      - name: Download CCTV high-bitrate footage and render
+      - name: Download CCTV footage and render v9
         run: |
           mkdir -p out
           set +e
-          python tools/render_xiangyu_hq_v8.py > out/render.log 2>&1
+          python tools/render_xiangyu_hq_v9.py > out/render.log 2>&1
           status=$?
           cat out/render.log
           echo "$status" > out/render-exit-code.txt
@@ -61,7 +63,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: xiangyu-hq-depth-video-v8
+          name: xiangyu-clear-depth-video-v9
           path: out/
           if-no-files-found: error
           compression-level: 0
