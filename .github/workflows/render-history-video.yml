@@ -37,20 +37,30 @@ jobs:
           python -m pip install edge-tts requests
 
       - name: Download footage, narrate and render
-        run: python tools/render_history_video.py
+        run: |
+          mkdir -p out
+          set +e
+          python tools/render_history_video.py > out/render.log 2>&1
+          status=$?
+          cat out/render.log
+          echo "$status" > out/render-exit-code.txt
+          exit 0
 
       - name: Show output metadata
+        if: always()
         run: |
-          ls -lh out
-          ffprobe -v error -show_streams -show_format -of json out/*.mp4
+          ls -lh out || true
+          for f in out/*.mp4; do
+            [ -e "$f" ] || continue
+            ffprobe -v error -show_streams -show_format -of json "$f" || true
+          done
 
-      - name: Upload final video
+      - name: Upload render result and diagnostic log
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: xiang-yu-history-video
-          path: |
-            out/*.mp4
-            out/*.jpg
+          path: out/
           if-no-files-found: error
           compression-level: 0
           retention-days: 7
