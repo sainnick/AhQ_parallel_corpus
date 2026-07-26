@@ -5,13 +5,13 @@ on:
     branches:
       - tmp/xiangyu-real-clips-v2
     paths:
-      - tools/render_xiangyu_real_clips_v2.py
+      - tools/render_xiangyu_real_clips_v3.py
       - .github/workflows/render-xiangyu-real-clips.yml
   pull_request:
     branches:
       - main
     paths:
-      - tools/render_xiangyu_real_clips_v2.py
+      - tools/render_xiangyu_real_clips_v3.py
       - .github/workflows/render-xiangyu-real-clips.yml
   workflow_dispatch:
 
@@ -36,11 +36,11 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install yt-dlp edge-tts
 
-      - name: Download Xiang Yu clips and render
+      - name: Download Xiang Yu highlights and render
         run: |
           mkdir -p out
           set +e
-          python tools/render_xiangyu_real_clips_v2.py > out/render.log 2>&1
+          python tools/render_xiangyu_real_clips_v3.py > out/render.log 2>&1
           status=$?
           cat out/render.log
           echo "$status" > out/render-exit-code.txt
@@ -59,7 +59,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: xiangyu-real-clips-fast-video-v2
+          name: xiangyu-highlight-fast-video-v3
           path: out/
           if-no-files-found: error
           compression-level: 0
