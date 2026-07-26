@@ -5,13 +5,13 @@ on:
     branches:
       - tmp/history-video-render
     paths:
-      - tools/render_history_video_v2.py
+      - tools/render_history_video_v3.py
       - .github/workflows/render-history-video.yml
   pull_request:
     branches:
       - main
     paths:
-      - tools/render_history_video_v2.py
+      - tools/render_history_video_v3.py
       - .github/workflows/render-history-video.yml
   workflow_dispatch:
 
@@ -40,7 +40,7 @@ jobs:
         run: |
           mkdir -p out
           set +e
-          python tools/render_history_video_v2.py > out/render.log 2>&1
+          python tools/render_history_video_v3.py > out/render.log 2>&1
           status=$?
           cat out/render.log
           echo "$status" > out/render-exit-code.txt
@@ -59,7 +59,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: xiang-yu-history-video
+          name: xiang-yu-history-video-v3
           path: out/
           if-no-files-found: error
           compression-level: 0
