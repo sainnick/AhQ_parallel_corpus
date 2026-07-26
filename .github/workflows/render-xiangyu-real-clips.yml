@@ -7,6 +7,12 @@ on:
     paths:
       - tools/render_xiangyu_real_clips_v3.py
       - .github/workflows/render-xiangyu-real-clips.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/render_xiangyu_real_clips_v3.py
+      - .github/workflows/render-xiangyu-real-clips.yml
   workflow_dispatch:
 
 permissions:
