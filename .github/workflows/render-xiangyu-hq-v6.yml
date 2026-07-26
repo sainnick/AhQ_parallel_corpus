@@ -7,6 +7,12 @@ on:
     paths:
       - tools/render_xiangyu_hq_v6.py
       - .github/workflows/render-xiangyu-hq-v6.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tools/render_xiangyu_hq_v6.py
+      - .github/workflows/render-xiangyu-hq-v6.yml
   workflow_dispatch:
 
 permissions:
