@@ -1,0 +1,50 @@
+name: Render history video
+
+on:
+  push:
+    branches:
+      - tmp/history-video-render
+    paths:
+      - tools/render_history_video.py
+      - .github/workflows/render-history-video.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout temporary render branch
+        uses: actions/checkout@v4
+
+      - name: Install FFmpeg and Chinese fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-cjk
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install edge-tts requests
+
+      - name: Download footage, narrate and render
+        run: python tools/render_history_video.py
+
+      - name: Show output metadata
+        run: |
+          ls -lh out
+          ffprobe -v error -show_streams -show_format -of json out/*.mp4
+
+      - name: Upload final video
+        uses: actions/upload-artifact@v4
+        with:
+          name: xiang-yu-history-video
+          path: |
+            out/*.mp4
+            out/*.jpg
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
