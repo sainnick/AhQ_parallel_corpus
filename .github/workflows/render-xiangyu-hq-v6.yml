@@ -1,4 +1,4 @@
-name: Render Xiang Yu HQ v6
+name: Render Xiang Yu HQ v7
 
 on:
   push:
@@ -6,12 +6,14 @@ on:
       - tmp/xiangyu-hq-v6
     paths:
       - tools/render_xiangyu_hq_v6.py
+      - tools/render_xiangyu_hq_v7.py
       - .github/workflows/render-xiangyu-hq-v6.yml
   pull_request:
     branches:
       - main
     paths:
       - tools/render_xiangyu_hq_v6.py
+      - tools/render_xiangyu_hq_v7.py
       - .github/workflows/render-xiangyu-hq-v6.yml
   workflow_dispatch:
 
@@ -36,11 +38,11 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install yt-dlp edge-tts
 
-      - name: Download high-resolution footage and render
+      - name: Search and download high-resolution footage
         run: |
           mkdir -p out
           set +e
-          python tools/render_xiangyu_hq_v6.py > out/render.log 2>&1
+          python tools/render_xiangyu_hq_v7.py > out/render.log 2>&1
           status=$?
           cat out/render.log
           echo "$status" > out/render-exit-code.txt
@@ -59,7 +61,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: xiangyu-hq-depth-video-v6
+          name: xiangyu-hq-depth-video-v7
           path: out/
           if-no-files-found: error
           compression-level: 0
