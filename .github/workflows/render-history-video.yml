@@ -5,13 +5,13 @@ on:
     branches:
       - tmp/history-video-render
     paths:
-      - tools/render_history_video.py
+      - tools/render_history_video_v2.py
       - .github/workflows/render-history-video.yml
   pull_request:
     branches:
       - main
     paths:
-      - tools/render_history_video.py
+      - tools/render_history_video_v2.py
       - .github/workflows/render-history-video.yml
   workflow_dispatch:
 
@@ -40,7 +40,7 @@ jobs:
         run: |
           mkdir -p out
           set +e
-          python tools/render_history_video.py > out/render.log 2>&1
+          python tools/render_history_video_v2.py > out/render.log 2>&1
           status=$?
           cat out/render.log
           echo "$status" > out/render-exit-code.txt
