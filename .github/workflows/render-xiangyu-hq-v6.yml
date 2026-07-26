@@ -1,0 +1,60 @@
+name: Render Xiang Yu HQ v6
+
+on:
+  push:
+    branches:
+      - tmp/xiangyu-hq-v6
+    paths:
+      - tools/render_xiangyu_hq_v6.py
+      - .github/workflows/render-xiangyu-hq-v6.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout temporary render branch
+        uses: actions/checkout@v4
+
+      - name: Install FFmpeg and Chinese fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-noto-cjk
+
+      - name: Install downloader and TTS
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install yt-dlp edge-tts
+
+      - name: Download high-resolution footage and render
+        run: |
+          mkdir -p out
+          set +e
+          python tools/render_xiangyu_hq_v6.py > out/render.log 2>&1
+          status=$?
+          cat out/render.log
+          echo "$status" > out/render-exit-code.txt
+          exit 0
+
+      - name: Inspect outputs
+        if: always()
+        run: |
+          ls -lh out || true
+          for f in out/*.mp4; do
+            [ -e "$f" ] || continue
+            ffprobe -v error -show_streams -show_format -of json "$f" || true
+          done
+
+      - name: Upload render result and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: xiangyu-hq-depth-video-v6
+          path: out/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
