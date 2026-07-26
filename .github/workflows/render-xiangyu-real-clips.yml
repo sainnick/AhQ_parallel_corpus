@@ -7,12 +7,6 @@ on:
     paths:
       - tools/render_xiangyu_real_clips_v3.py
       - .github/workflows/render-xiangyu-real-clips.yml
-  pull_request:
-    branches:
-      - main
-    paths:
-      - tools/render_xiangyu_real_clips_v3.py
-      - .github/workflows/render-xiangyu-real-clips.yml
   workflow_dispatch:
 
 permissions:
@@ -50,17 +44,21 @@ jobs:
         if: always()
         run: |
           ls -lh out || true
+          ls -lh xiangyu_real_clips_v3_work/downloads || true
           for f in out/*.mp4; do
             [ -e "$f" ] || continue
             ffprobe -v error -show_streams -show_format -of json "$f" || true
           done
 
-      - name: Upload final files and diagnostics
+      - name: Upload final, source clips, and narration
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: xiangyu-highlight-fast-video-v3
-          path: out/
+          name: xiangyu-source-bundle-v4
+          path: |
+            out/
+            xiangyu_real_clips_v3_work/downloads/*.mp4
+            xiangyu_real_clips_v3_work/voice/narration.m4a
           if-no-files-found: error
           compression-level: 0
           retention-days: 7
