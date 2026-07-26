@@ -1,4 +1,4 @@
-name: Render Xiang Yu HQ v9
+name: Render Xiang Yu HQ v11
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     paths:
       - tools/render_xiangyu_hq_v6.py
       - tools/render_xiangyu_hq_v8.py
-      - tools/render_xiangyu_hq_v9.py
+      - tools/render_xiangyu_hq_v11.py
       - .github/workflows/render-xiangyu-hq-v6.yml
   pull_request:
     branches:
@@ -15,7 +15,7 @@ on:
     paths:
       - tools/render_xiangyu_hq_v6.py
       - tools/render_xiangyu_hq_v8.py
-      - tools/render_xiangyu_hq_v9.py
+      - tools/render_xiangyu_hq_v11.py
       - .github/workflows/render-xiangyu-hq-v6.yml
   workflow_dispatch:
 
@@ -40,11 +40,11 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install edge-tts requests
 
-      - name: Download CCTV footage and render v9
+      - name: Download CCTV footage and render v11
         run: |
           mkdir -p out
           set +e
-          python tools/render_xiangyu_hq_v9.py > out/render.log 2>&1
+          python tools/render_xiangyu_hq_v11.py > out/render.log 2>&1
           status=$?
           cat out/render.log
           echo "$status" > out/render-exit-code.txt
@@ -63,7 +63,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: xiangyu-clear-depth-video-v9
+          name: xiangyu-full-frame-accessible-v11
           path: out/
           if-no-files-found: error
           compression-level: 0
