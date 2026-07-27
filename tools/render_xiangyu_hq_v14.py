@@ -97,11 +97,17 @@ def render(
 
     renamed_final = base.OUT / "项羽为什么输给刘邦_无标点读音修正版.mp4"
     renamed_sheet = base.OUT / "项羽无标点读音修正版_视觉检查.jpg"
+    if renamed_final.exists():
+        renamed_final.unlink()
+    if renamed_sheet.exists():
+        renamed_sheet.unlink()
     final.replace(renamed_final)
     sheet.replace(renamed_sheet)
 
     clean_voice = base.OUT / "项羽解说_齐国一带修正版.m4a"
     source_voice = base.OUT / "项羽解说_纯净旁白.m4a"
+    if clean_voice.exists():
+        clean_voice.unlink()
     if source_voice.exists():
         source_voice.replace(clean_voice)
 
