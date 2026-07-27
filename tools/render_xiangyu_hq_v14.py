@@ -9,7 +9,6 @@ import render_xiangyu_hq_v13 as v13
 
 base = v13.base
 
-# Avoid the ambiguous TTS pronunciation of “齐地” by using a plain-language equivalent.
 base.PHRASES[4] = (
     "结果齐国一带反了，诸侯摇摆，刘邦又从关中杀出来。"
     "项羽就像最强的救火队长，一处刚扑灭，另一处又着了。"
