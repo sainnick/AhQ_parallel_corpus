@@ -1,4 +1,4 @@
-name: Render Xiang Yu HQ v12
+name: Render Xiang Yu HQ v13
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - tools/render_xiangyu_hq_v6.py
       - tools/render_xiangyu_hq_v8.py
       - tools/render_xiangyu_hq_v11.py
-      - tools/render_xiangyu_hq_v12.py
+      - tools/render_xiangyu_hq_v13.py
       - .github/workflows/render-xiangyu-hq-v6.yml
   pull_request:
     branches:
@@ -17,7 +17,7 @@ on:
       - tools/render_xiangyu_hq_v6.py
       - tools/render_xiangyu_hq_v8.py
       - tools/render_xiangyu_hq_v11.py
-      - tools/render_xiangyu_hq_v12.py
+      - tools/render_xiangyu_hq_v13.py
       - .github/workflows/render-xiangyu-hq-v6.yml
   workflow_dispatch:
 
@@ -42,11 +42,11 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install edge-tts requests
 
-      - name: Download CCTV footage and render v12
+      - name: Download CCTV footage and render v13
         run: |
           mkdir -p out
           set +e
-          python tools/render_xiangyu_hq_v12.py > out/render.log 2>&1
+          python tools/render_xiangyu_hq_v13.py > out/render.log 2>&1
           status=$?
           cat out/render.log
           echo "$status" > out/render-exit-code.txt
@@ -60,12 +60,16 @@ jobs:
             [ -e "$f" ] || continue
             ffprobe -v error -show_streams -show_format -of json "$f" || true
           done
+          for f in out/*.m4a; do
+            [ -e "$f" ] || continue
+            ffprobe -v error -show_streams -show_format -of json "$f" || true
+          done
 
       - name: Upload render result and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: xiangyu-full-frame-accessible-v12
+          name: xiangyu-subtitle-voice-sync-v13
           path: out/
           if-no-files-found: error
           compression-level: 0
